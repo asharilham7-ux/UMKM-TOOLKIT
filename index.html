@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UMKM Profit & Pricing Toolkit</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="header-content">
+                <h1>UMKM Profit & Pricing Toolkit</h1>
+                <p>Hitung harga, biaya, dan keuntungan bisnis dengan mudah.</p>
+            </div>
+            <button id="theme-toggle" class="icon-btn" aria-label="Toggle Theme">🌙</button>
+        </header>
+
+        <!-- MAIN CONTENT AREA -->
+        <main id="main-content">
+            <!-- DASHBOARD VIEW -->
+            <section id="view-dashboard" class="view active">
+                <div class="welcome-banner">
+                    <h2>Pilih Kalkulator Bisnis</h2>
+                    <p>Pilih alat di bawah sesuai kebutuhan perhitungan usaha Anda.</p>
+                </div>
+                <div class="card-grid">
+                    <div class="menu-card" data-target="view-hpp">
+                        <div class="card-icon">📦</div>
+                        <h3>Kalkulator HPP</h3>
+                        <p>Hitung Harga Pokok Produksi per produk secara akurat.</p>
+                    </div>
+                    <div class="menu-card" data-target="view-price">
+                        <div class="card-icon">🏷️</div>
+                        <h3>Harga Jual</h3>
+                        <p>Tentukan harga jual berdasarkan target margin & biaya platform.</p>
+                    </div>
+                    <div class="menu-card" data-target="view-profit">
+                        <div class="card-icon">💰</div>
+                        <h3>Keuntungan</h3>
+                        <p>Analisis pendapatan, total biaya, dan bersih profit usaha.</p>
+                    </div>
+                    <div class="menu-card" data-target="view-bep">
+                        <div class="card-icon">⚖️</div>
+                        <h3>BEP (Break Even Point)</h3>
+                        <p>Ketahui batas minimum unit dan omzet agar tidak rugi.</p>
+                    </div>
+                    <div class="menu-card" data-target="view-target">
+                        <div class="card-icon">🎯</div>
+                        <h3>Target Penjualan</h3>
+                        <p>Hitung jumlah produk yang harus terjual demi target cuan.</p>
+                    </div>
+                    <div class="menu-card" data-target="view-simulation">
+                        <div class="card-icon">📊</div>
+                        <h3>Simulasi Harga</h3>
+                        <p>Bandingkan beberapa pilihan harga jual sekaligus.</p>
+                    </div>
+                    <div class="menu-card" data-target="view-discount">
+                        <div class="card-icon">🏷️</div>
+                        <h3>Simulasi Diskon</h3>
+                        <p>Cek dampak promo diskon terhadap keuntungan bersih.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 1. HPP CALCULATOR -->
+            <section id="view-hpp" class="view">
+                <div class="view-header">
+                    <button class="back-btn" data-target="view-dashboard">← Kembali</button>
+                    <h2>Kalkulator HPP</h2>
+                </div>
+                <div class="form-card">
+                    <div class="input-group">
+                        <label for="hpp-name">Nama Produk</label>
+                        <input type="text" id="hpp-name" placeholder="Contoh: Keripik Singkong Balado">
+                    </div>
+                    <div class="input-group">
+                        <label for="hpp-material">Bahan Baku (Total)</label>
+                        <input type="number" id="hpp-material" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="hpp-packaging">Kemasan (Total)</label>
+                        <input type="number" id="hpp-packaging" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="hpp-labor">Tenaga Kerja (Total)</label>
+                        <input type="number" id="hpp-labor" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="hpp-electricity">Biaya Listrik</label>
+                        <input type="number" id="hpp-electricity" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="hpp-gas">Biaya Gas</label>
+                        <input type="number" id="hpp-gas" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="hpp-other">Biaya Operasional Lain</label>
+                        <input type="number" id="hpp-other" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="hpp-qty">Jumlah Produk Dihasilkan</label>
+                        <input type="number" id="hpp-qty" placeholder="1">
+                    </div>
+                    <div class="btn-row">
+                        <button id="calc-hpp-btn" class="primary-btn">Hitung HPP</button>
+                        <button id="reset-hpp-btn" class="secondary-btn">Reset</button>
+                    </div>
+                </div>
+                <div id="result-hpp" class="result-card hidden">
+                    <h3>HASIL PERHITUNGAN HPP</h3>
+                    <div class="result-item"><span>Total Biaya Produksi:</span> <strong id="res-hpp-total">-</strong></div>
+                    <div class="result-item highlight"><span>HPP per Produk:</span> <strong id="res-hpp-unit">-</strong></div>
+                    <div class="action-row">
+                        <button class="action-btn copy-btn" data-clipboard="result-hpp">Salin Hasil</button>
+                        <button class="action-btn wa-btn" data-wa="result-hpp">Bagikan WhatsApp</button>
+                        <button class="action-btn save-btn" data-type="HPP">Simpan ke Riwayat</button>
+                    </div>
+                </div>
+                <div class="educational-card">
+                    <h4>Apa itu HPP?</h4>
+                    <p>HPP adalah perkiraan total biaya yang diperlukan untuk menghasilkan satu produk.</p>
+                </div>
+            </section>
+
+            <!-- 2. SELLING PRICE CALCULATOR -->
+            <section id="view-price" class="view">
+                <div class="view-header">
+                    <button class="back-btn" data-target="view-dashboard">← Kembali</button>
+                    <h2>Kalkulator Harga Jual</h2>
+                </div>
+                <div class="form-card">
+                    <div class="input-group">
+                        <label for="price-name">Nama Produk</label>
+                        <input type="text" id="price-name" placeholder="Contoh: Kopi Susu Literan">
+                    </div>
+                    <div class="input-group">
+                        <label for="price-hpp">HPP per Produk</label>
+                        <input type="number" id="price-hpp" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="price-margin">Target Margin Keuntungan (%)</label>
+                        <input type="number" id="price-margin" placeholder="Contoh: 30">
+                    </div>
+                    <div class="input-group">
+                        <label for="price-mkt">Biaya Marketplace (%)</label>
+                        <input type="number" id="price-mkt" placeholder="Contoh: 5">
+                    </div>
+                    <div class="input-group">
+                        <label for="price-pay">Biaya Pembayaran / Transaksi (%)</label>
+                        <input type="number" id="price-pay" placeholder="Contoh: 1">
+                    </div>
+                    <div class="input-group">
+                        <label for="price-other">Biaya Lain per Produk (Rp)</label>
+                        <input type="number" id="price-other" placeholder="0">
+                    </div>
+                    <div class="btn-row">
+                        <button id="calc-price-btn" class="primary-btn">Hitung Harga Jual</button>
+                        <button id="reset-price-btn" class="secondary-btn">Reset</button>
+                    </div>
+                </div>
+                <div id="result-price" class="result-card hidden">
+                    <h3>HASIL SIMULASI HARGA</h3>
+                    <div class="result-item"><span>HPP:</span> <strong id="res-price-hpp">-</strong></div>
+                    <div class="result-item highlight"><span>Harga Jual Rekomendasi:</span> <strong id="res-price-suggest">-</strong></div>
+                    <div class="result-item"><span>Estimasi Biaya Platform/Lain:</span> <strong id="res-price-cost">-</strong></div>
+                    <div class="result-item"><span>Estimasi Keuntungan Bersih:</span> <strong id="res-price-profit">-</strong></div>
+                    <div class="result-item"><span>Margin Aktual:</span> <strong id="res-price-actual-margin">-</strong></div>
+                    <div class="action-row">
+                        <button class="action-btn copy-btn" data-clipboard="result-price">Salin Hasil</button>
+                        <button class="action-btn wa-btn" data-wa="result-price">Bagikan WhatsApp</button>
+                        <button class="action-btn save-btn" data-type="Harga Jual">Simpan ke Riwayat</button>
+                    </div>
+                </div>
+                <div class="educational-card">
+                    <h4>Catatan Margin vs Markup</h4>
+                    <p>Margin menunjukkan persentase keuntungan dibandingkan harga jual, sedangkan markup dibandingkan modal. Hasil ini adalah harga simulasi.</p>
+                </div>
+            </section>
+
+            <!-- 3. PROFIT CALCULATOR -->
+            <section id="view-profit" class="view">
+                <div class="view-header">
+                    <button class="back-btn" data-target="view-dashboard">← Kembali</button>
+                    <h2>Kalkulator Keuntungan</h2>
+                </div>
+                <div class="form-card">
+                    <div class="input-group">
+                        <label for="prof-name">Nama Produk</label>
+                        <input type="text" id="prof-name" placeholder="Contoh: Sabun Cuci Piring">
+                    </div>
+                    <div class="input-group">
+                        <label for="prof-selling">Harga Jual per Produk</label>
+                        <input type="number" id="prof-selling" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="prof-hpp">HPP per Produk</label>
+                        <input type="number" id="prof-hpp" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="prof-mkt">Biaya Marketplace (%)</label>
+                        <input type="number" id="prof-mkt" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="prof-trans">Biaya Transaksi (%)</label>
+                        <input type="number" id="prof-trans" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="prof-other">Biaya Lain per Produk (Rp)</label>
+                        <input type="number" id="prof-other" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="prof-qty">Jumlah Produk Terjual</label>
+                        <input type="number" id="prof-qty" placeholder="1">
+                    </div>
+                    <div class="btn-row">
+                        <button id="calc-prof-btn" class="primary-btn">Hitung Keuntungan</button>
+                        <button id="reset-prof-btn" class="secondary-btn">Reset</button>
+                    </div>
+                </div>
+                <div id="result-prof" class="result-card hidden">
+                    <h3>HASIL ANALISIS KEUNTUNGAN</h3>
+                    <div class="result-item"><span>Total Pendapatan:</span> <strong id="res-prof-revenue">-</strong></div>
+                    <div class="result-item"><span>Total HPP & Biaya:</span> <strong id="res-prof-totalcost">-</strong></div>
+                    <div class="result-item highlight"><span>Total Keuntungan Bersih:</span> <strong id="res-prof-net">-</strong></div>
+                    <div class="result-item"><span>Keuntungan per Produk:</span> <strong id="res-prof-unit">-</strong></div>
+                    <div class="result-item"><span>Margin Keuntungan:</span> <strong id="res-prof-margin">-</strong></div>
+                    <div id="prof-warning" class="warning-box hidden"></div>
+                    <div class="action-row">
+                        <button class="action-btn copy-btn" data-clipboard="result-prof">Salin Hasil</button>
+                        <button class="action-btn wa-btn" data-wa="result-prof">Bagikan WhatsApp</button>
+                        <button class="action-btn save-btn" data-type="Keuntungan">Simpan ke Riwayat</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. BEP CALCULATOR -->
+            <section id="view-bep" class="view">
+                <div class="view-header">
+                    <button class="back-btn" data-target="view-dashboard">← Kembali</button>
+                    <h2>Kalkulator BEP</h2>
+                </div>
+                <div class="form-card">
+                    <div class="input-group">
+                        <label for="bep-fixed">Biaya Tetap Bulanan (Sewa, Gaji, dll)</label>
+                        <input type="number" id="bep-fixed" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="bep-price">Harga Jual per Produk</label>
+                        <input type="number" id="bep-price" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="bep-var">Biaya Variabel per Produk (HPP/Bahan)</label>
+                        <input type="number" id="bep-var" placeholder="0">
+                    </div>
+                    <div class="btn-row">
+                        <button id="calc-bep-btn" class="primary-btn">Hitung BEP</button>
+                        <button id="reset-bep-btn" class="secondary-btn">Reset</button>
+                    </div>
+                </div>
+                <div id="result-bep" class="result-card hidden">
+                    <h3>HASIL BREAK EVEN POINT (BEP)</h3>
+                    <div class="result-item highlight"><span>BEP dalam Unit:</span> <strong id="res-bep-units">-</strong></div>
+                    <div class="result-item"><span>BEP dalam Rupiah (Omzet):</span> <strong id="res-bep-rupiah">-</strong></div>
+                    <div id="bep-warning" class="warning-box hidden"></div>
+                    <div class="action-row">
+                        <button class="action-btn copy-btn" data-clipboard="result-bep">Salin Hasil</button>
+                        <button class="action-btn wa-btn" data-wa="result-bep">Bagikan WhatsApp</button>
+                        <button class="action-btn save-btn" data-type="BEP">Simpan ke Riwayat</button>
+                    </div>
+                </div>
+                <div class="educational-card">
+                    <h4>Apa itu BEP?</h4>
+                    <p>BEP (Break Even Point) menunjukkan jumlah penjualan yang dibutuhkan agar total pendapatan menutup semua biaya (titik impas).</p>
+                </div>
+            </section>
+
+            <!-- 5. TARGET SALES CALCULATOR -->
+            <section id="view-target" class="view">
+                <div class="view-header">
+                    <button class="back-btn" data-target="view-dashboard">← Kembali</button>
+                    <h2>Target Penjualan</h2>
+                </div>
+                <div class="form-card">
+                    <div class="input-group">
+                        <label for="target-profit">Target Keuntungan yang Diinginkan</label>
+                        <input type="number" id="target-profit" placeholder="Contoh: 1000000">
+                    </div>
+                    <div class="input-group">
+                        <label for="target-unit-profit">Keuntungan Bersih per Produk</label>
+                        <input type="number" id="target-unit-profit" placeholder="Contoh: 25000">
+                    </div>
+                    <div class="btn-row">
+                        <button id="calc-target-btn" class="primary-btn">Hitung Target Unit</button>
+                        <button id="reset-target-btn" class="secondary-btn">Reset</button>
+                    </div>
+                </div>
+                <div id="result-target" class="result-card hidden">
+                    <h3>HASIL TARGET PENJUALAN</h3>
+                    <div class="result-item highlight"><span>Minimal Penjualan:</span> <strong id="res-target-units">-</strong></div>
+                    <div id="target-example" class="info-box"></div>
+                    <div class="action-row">
+                        <button class="action-btn copy-btn" data-clipboard="result-target">Salin Hasil</button>
+                        <button class="action-btn wa-btn" data-wa="result-target">Bagikan WhatsApp</button>
+                        <button class="action-btn save-btn" data-type="Target Penjualan">Simpan ke Riwayat</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. PRICE SIMULATION -->
+            <section id="view-simulation" class="view">
+                <div class="view-header">
+                    <button class="back-btn" data-target="view-dashboard">← Kembali</button>
+                    <h2>Simulasi Harga Skenario</h2>
+                </div>
+                <div class="form-card">
+                    <div class="input-group">
+                        <label for="sim-hpp">HPP per Produk</label>
+                        <input type="number" id="sim-hpp" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="sim-price-a">Harga Skenario A</label>
+                        <input type="number" id="sim-price-a" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="sim-price-b">Harga Skenario B</label>
+                        <input type="number" id="sim-price-b" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="sim-price-c">Harga Skenario C</label>
+                        <input type="number" id="sim-price-c" placeholder="0">
+                    </div>
+                    <div class="btn-row">
+                        <button id="calc-sim-btn" class="primary-btn">Bandingkan Skenario</button>
+                        <button id="reset-sim-btn" class="secondary-btn">Reset</button>
+                    </div>
+                </div>
+                <div id="result-sim" class="result-card hidden">
+                    <h3>HASIL PERBANDINGAN SKENARIO</h3>
+                    <div class="table-responsive">
+                        <table id="sim-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Skenario A</th>
+                                    <th>Skenario B</th>
+                                    <th>Skenario C</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dinamis via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="action-row" style="margin-top: 15px;">
+                        <button class="action-btn copy-btn" data-clipboard="result-sim">Salin Hasil</button>
+                        <button class="action-btn wa-btn" data-wa="result-sim">Bagikan WhatsApp</button>
+                        <button class="action-btn save-btn" data-type="Simulasi Harga">Simpan ke Riwayat</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. DISCOUNT SIMULATION -->
+            <section id="view-discount" class="view">
+                <div class="view-header">
+                    <button class="back-btn" data-target="view-dashboard">← Kembali</button>
+                    <h2>Simulasi Diskon</h2>
+                </div>
+                <div class="form-card">
+                    <div class="input-group">
+                        <label for="disc-normal">Harga Normal</label>
+                        <input type="number" id="disc-normal" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="disc-percent">Persentase Diskon (%)</label>
+                        <input type="number" id="disc-percent" placeholder="Contoh: 20">
+                    </div>
+                    <div class="input-group">
+                        <label for="disc-hpp">HPP per Produk</label>
+                        <input type="number" id="disc-hpp" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="disc-other">Biaya Tambahan / Transaksi per Produk</label>
+                        <input type="number" id="disc-other" placeholder="0">
+                    </div>
+                    <div class="btn-row">
+                        <button id="calc-disc-btn" class="primary-btn">Hitung Diskon</button>
+                        <button id="reset-disc-btn" class="secondary-btn">Reset</button>
+                    </div>
+                </div>
+                <div id="result-disc" class="result-card hidden">
+                    <h3>HASIL SIMULASI DISKON</h3>
+                    <div class="result-item"><span>Harga Setelah Diskon:</span> <strong id="res-disc-price">-</strong></div>
+                    <div class="result-item"><span>Keuntungan Setelah Diskon:</span> <strong id="res-disc-profit">-</strong></div>
+                    <div class="result-item"><span>Margin Setelah Diskon:</span> <strong id="res-disc-margin">-</strong></div>
+                    <div id="disc-warning" class="warning-box hidden"></div>
+                    <div class="action-row">
+                        <button class="action-btn copy-btn" data-clipboard="result-disc">Salin Hasil</button>
+                        <button class="action-btn wa-btn" data-wa="result-disc">Bagikan WhatsApp</button>
+                        <button class="action-btn save-btn" data-type="Simulasi Diskon">Simpan ke Riwayat</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- HISTORY VIEW -->
+            <section id="view-history" class="view">
+                <div class="view-header">
+                    <h2>Riwayat Perhitungan</h2>
+                </div>
+                <div id="history-list" class="history-container">
+                    <!-- Data tersimpan -->
+                </div>
+                <div class="btn-row" style="margin-top: 15px;">
+                    <button id="clear-history-btn" class="secondary-btn" style="width: 100%;">Hapus Semua Riwayat</button>
+                </div>
+            </section>
+
+            <!-- SETTINGS VIEW -->
+            <section id="view-settings" class="view">
+                <div class="view-header">
+                    <h2>Pengaturan & Informasi</h2>
+                </div>
+                <div class="form-card">
+                    <div class="setting-item">
+                        <div>
+                            <h4>Mode Gelap</h4>
+                            <p>Ubah tampilan aplikasi menjadi gelap.</p>
+                        </div>
+                        <button id="settings-theme-btn" class="secondary-btn">Ubah Tema</button>
+                    </div>
+                    <hr style="margin: 15px 0; border: 0; border-top: 1px solid var(--border-color);">
+                    <div class="setting-item">
+                        <div>
+                            <h4>Hapus Data Tersimpan</h4>
+                            <p>Bersihkan semua cache local storage aplikasi.</p>
+                        </div>
+                        <button id="clear-storage-btn" class="secondary-btn" style="color: #e74c3c; border-color: #e74c3c;">Hapus Data</button>
+                    </div>
+                </div>
+                <div class="educational-card" style="margin-top: 15px;">
+                    <h4>Tentang Aplikasi</h4>
+                    <p><strong>UMKM Profit & Pricing Toolkit</strong> didesain untuk membantu pedagang kecil, reseller, dan pelaku UMKM menghitung angka usaha secara cepat dan praktis tanpa ribet.</p>
+                    <p style="margin-top: 10px; font-size: 0.85rem; color: var(--text-muted);">
+                        Catatan: Hasil kalkulator merupakan simulasi berdasarkan data yang dimasukkan pengguna. Biaya nyata dapat berbeda tergantung kondisi usaha, pajak, biaya platform, operasional, dan faktor lainnya.
+                    </p>
+                </div>
+            </section>
+        </main>
+
+        <!-- BOTTOM NAVIGATION -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-target="view-dashboard">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-label">Beranda</span>
+            </button>
+            <button class="nav-item" data-target="view-dashboard">
+                <span class="nav-icon">🧮</span>
+                <span class="nav-label">Kalkulator</span>
+            </button>
+            <button class="nav-item" data-target="view-history">
+                <span class="nav-icon">📜</span>
+                <span class="nav-label">Riwayat</span>
+            </button>
+            <button class="nav-item" data-target="view-settings">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-label">Pengaturan</span>
+            </button>
+        </nav>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
